@@ -53,7 +53,12 @@ def civic_get(path, params):
         raise LookupError(e.code, msg)
 
 
+FEDERAL_OFFICE = re.compile(r"united states senat|u\.?s\.? senat|representative in congress|u\.?s\.? (house|representative)|president", re.I)
+STATE_COURT = re.compile(r"supreme court|court of appeals|tax court", re.I)
+
+
 def level_of(contest):
+    """Federal / state / local. Google often omits `level`, so fall back to the office name and district scope."""
     levels = [l.lower() for l in contest.get("level", [])]
     if "country" in levels:
         return "federal"
@@ -61,6 +66,14 @@ def level_of(contest):
         return "state"
     if levels:
         return "local"
+    office = contest.get("office", "")
+    if FEDERAL_OFFICE.search(office) or (contest.get("district", {}).get("scope") == "congressional"):
+        return "federal"
+    scope = contest.get("district", {}).get("scope")
+    if scope in ("statewide", "stateUpper", "stateLower"):
+        return "state"
+    if scope == "judicial":  # appellate and supreme courts are statewide; circuit, probate and district courts are local
+        return "state" if STATE_COURT.search(office + " " + contest.get("district", {}).get("name", "")) else "local"
     return "local"
 
 
@@ -96,6 +109,10 @@ def normalize(election, vi):
                 for k in c.get("candidates", [])
             ],
         }
+        title = c.get("referendumTitle") or ""
+        if "\n" in title.strip() and not c.get("office"):
+            head, _, rest = title.strip().partition("\n")
+            item["office"], item["text"] = head.strip(), item["text"] or rest.strip()
         if c.get("referendumTitle") and not c.get("candidates"):
             item["type"] = "Referendum"
             item["options"] = c.get("referendumBallotResponses", [])
