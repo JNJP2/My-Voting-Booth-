@@ -303,5 +303,8 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     mode = "LIVE (Google Civic API)" if API_KEY else "DEMO (set GOOGLE_CIVIC_API_KEY for live data)"
-    print(f"Voter lookup on {HOST}:{PORT} — {mode}")
+    print(f"Voter lookup on {HOST}:{PORT} — {mode}", flush=True)  # flush: hosts capture stdout through a pipe, which is otherwise buffered
+    near = [k for k in os.environ if ("CIVIC" in k.upper() or "GOOGLE" in k.upper()) and k != "GOOGLE_CIVIC_API_KEY"]
+    if near and not API_KEY:
+        print(f"No GOOGLE_CIVIC_API_KEY found, but these similarly named variables exist (names only): {near}", flush=True)
     ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
