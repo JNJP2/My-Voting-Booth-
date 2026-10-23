@@ -1,0 +1,125 @@
+{
+ "scale": "Answers run from -2 (strongly disagree) to +2 (strongly agree). agreeLeans: -1 = agreeing is the more left-leaning answer, +1 = more right-leaning, 0 = doesn't map cleanly onto left/right and is not counted.",
+ "issues": [
+  {
+   "id": "health",
+   "title": "Healthcare",
+   "statement": "The government should guarantee health insurance for everyone.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "taxes",
+   "title": "Taxes & the economy",
+   "statement": "Taxes on high earners and corporations should be raised to fund public services.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "immigration",
+   "title": "Immigration",
+   "statement": "Border enforcement should be strengthened, even if it means fewer people can immigrate legally.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "abortion",
+   "title": "Abortion",
+   "statement": "Abortion should be legal in most or all cases.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "guns",
+   "title": "Gun policy",
+   "statement": "Laws protecting the right to own firearms should be strengthened rather than restricted.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "climate",
+   "title": "Climate & energy",
+   "statement": "Government should require a faster shift to clean energy, even if energy costs rise in the short term.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "education",
+   "title": "Schools",
+   "statement": "Families should receive public funding to send their children to private or charter schools.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "policing",
+   "title": "Crime & policing",
+   "statement": "Police funding should increase and sentences for violent crime should be tougher.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "housing",
+   "title": "Housing costs",
+   "statement": "Cities should loosen zoning rules to allow more homes to be built, even if neighborhoods change.",
+   "agreeLeans": 0
+  },
+  {
+   "id": "elections",
+   "title": "Voting rules",
+   "statement": "Voters should be required to show photo ID to vote.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "foreign",
+   "title": "Foreign policy",
+   "statement": "The U.S. should increase military and financial support for its allies abroad.",
+   "agreeLeans": 0
+  },
+  {
+   "id": "retirement",
+   "title": "Social Security & Medicare",
+   "statement": "Social Security and Medicare benefits should be protected from cuts, even if that means higher taxes.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "regulation",
+   "title": "Business regulation",
+   "statement": "Government regulation of business does more harm than good.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "deathpenalty",
+   "title": "Death penalty",
+   "statement": "The death penalty should be a legal punishment for the most serious crimes.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "trade",
+   "title": "Trade & tariffs",
+   "statement": "Tariffs on imported goods are a good way to protect American jobs.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "studentdebt",
+   "title": "Student debt",
+   "statement": "The federal government should cancel some student loan debt.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "gender",
+   "title": "Gender & schools",
+   "statement": "Schools should limit classroom discussion of gender identity and sexuality.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "religion",
+   "title": "Religion & government",
+   "statement": "Religious values should play a larger role in shaping public policy.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "marijuana",
+   "title": "Marijuana",
+   "statement": "Marijuana should be legal for adult recreational use nationwide.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "welfare",
+   "title": "Assistance programs",
+   "statement": "Government assistance programs for low-income people should be expanded.",
+   "agreeLeans": -1
+  }
+ ]
+}
