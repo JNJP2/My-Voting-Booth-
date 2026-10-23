@@ -185,6 +185,30 @@ def lookup_address(address):
         return result
 
 
+def add_statewide_measures(result):
+    """Append curated statewide measures for this state/election that Google didn't supply."""
+    try:
+        with open(os.path.join(ROOT, "data", "statewide_measures.json")) as f:
+            measures = json.load(f)["measures"]
+    except (OSError, ValueError, KeyError):
+        return result
+    state = (result.get("normalizedAddress", {}).get("state") or "").upper()
+    date = result["election"].get("date")
+    have = {c["office"].strip().lower() for c in result["contests"]} | {c.get("text", "").strip().lower() for c in result["contests"]}
+    for m in measures:
+        if m["state"].upper() != state or m["election"] != date:
+            continue
+        if m["title"].strip().lower() in have or m["question"].strip().lower() in have:
+            continue  # Google already supplied it
+        result["contests"].append({
+            "level": "state", "type": "Referendum", "office": m["title"], "district": "Statewide",
+            "category": m.get("category", ""), "text": m["question"], "options": m.get("options", []),
+            "candidates": [], "supplemental": True, "source": m.get("source", {}),
+        })
+        result["supplemented"] = True
+    return result
+
+
 def lookup_one(address):
     elections = civic_get("elections", {}).get("elections", [])
     real = [e for e in elections if "test" not in e.get("name", "").lower()]  # skip Google/VIP test elections
@@ -199,9 +223,9 @@ def lookup_one(address):
             last_err = err
             continue
         if vi.get("contests") or vi.get("pollingLocations") or vi.get("earlyVoteSites"):
-            return normalize(e, vi)
+            return add_statewide_measures(normalize(e, vi))
         if vi.get("state") and fallback is None:
-            fallback = normalize(e, vi)
+            fallback = add_statewide_measures(normalize(e, vi))
     if fallback:
         fallback["noData"] = True
         return fallback
