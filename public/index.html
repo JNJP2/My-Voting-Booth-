@@ -142,6 +142,14 @@ function render(d) {
   if (d.noData && d.supplemented) h += `<div class="banner"><b>Your address was recognized, but our data source has no local races or polling place for it yet.</b> The statewide measures below come from a separate statewide list, and your ballot may include more (local races and measures). Use the official links below to see your full ballot and polling place.</div>`;
   else if (d.noData) h += `<div class="banner"><b>Your address was recognized, but no ballot or polling-place data is published for it yet.</b> This is a gap in the data source, not a problem with your address. Use the official links below to see your ballot and find your polling place.</div>`;
   else if (!d.contests.length) h += `<div class="card">No contests are published for this address yet. Check back closer to the election, or visit your state election office below.</div>`;
+  const offi = d.officials || {};
+  const ballotLinks = [[offi.ballotInfoUrl || offi.votingLocationFinderUrl, `Your state's official ballot information${offi.name ? ` (${offi.name})` : ""}`],
+                       ["https://ballotpedia.org/Sample_Ballot_Lookup", "Ballotpedia's sample ballot lookup"]]
+    .filter(([u]) => safeUrl(u)).map(([u, t]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${t} ↗</a></li>`).join("");
+  h += `<section class="lvl-where"><h2><span class="ico">🔎</span>See your complete ballot</h2><div class="card">
+    <p style="margin-top:0">Local races and ballot measures (such as school, county and city referendums) aren't always included in the data this site uses. To see everything on <i>your</i> ballot, check these:</p>
+    <ul>${ballotLinks}</ul>
+    <p class="note">Ballotpedia covers all candidates in the 100 largest cities and notable local measures elsewhere, so it may not list every local item. For the most reliable local ballot, ask your county election office for an official sample ballot.</p></div></section>`;
   h += locations(d.zipOnly ? "Example polling place nearby" : "Your polling place", d.pollingLocations);
   h += locations("Early voting sites", d.earlyVoteSites);
   h += locations("Ballot drop-off locations", d.dropOffLocations);
