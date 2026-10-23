@@ -3,21 +3,9 @@
  "issues": [
   {
    "id": "health",
-   "title": "Healthcare",
+   "title": "Universal healthcare",
    "statement": "The government should guarantee health insurance for everyone.",
    "agreeLeans": -1
-  },
-  {
-   "id": "taxes",
-   "title": "Taxes & the economy",
-   "statement": "Taxes on high earners and corporations should be raised to fund public services.",
-   "agreeLeans": -1
-  },
-  {
-   "id": "immigration",
-   "title": "Immigration",
-   "statement": "Border enforcement should be strengthened, even if it means fewer people can immigrate legally.",
-   "agreeLeans": 1
   },
   {
    "id": "abortion",
@@ -27,56 +15,32 @@
   },
   {
    "id": "guns",
-   "title": "Gun policy",
-   "statement": "Laws protecting the right to own firearms should be strengthened rather than restricted.",
-   "agreeLeans": 1
-  },
-  {
-   "id": "climate",
-   "title": "Climate & energy",
-   "statement": "Government should require a faster shift to clean energy, even if energy costs rise in the short term.",
+   "title": "Gun control",
+   "statement": "Laws restricting gun ownership should be stricter.",
    "agreeLeans": -1
   },
   {
-   "id": "education",
-   "title": "Schools",
-   "statement": "Families should receive public funding to send their children to private or charter schools.",
-   "agreeLeans": 1
+   "id": "iran",
+   "title": "Iran war",
+   "statement": "The U.S. should end its military campaign against Iran.",
+   "agreeLeans": -1
   },
   {
-   "id": "policing",
-   "title": "Crime & policing",
-   "statement": "Police funding should increase and sentences for violent crime should be tougher.",
+   "id": "ice",
+   "title": "ICE & immigration enforcement",
+   "statement": "Federal funding for immigration enforcement (ICE and Border Patrol) should be increased.",
    "agreeLeans": 1
-  },
-  {
-   "id": "housing",
-   "title": "Housing costs",
-   "statement": "Cities should loosen zoning rules to allow more homes to be built, even if neighborhoods change.",
-   "agreeLeans": 0
   },
   {
    "id": "elections",
-   "title": "Voting rules",
+   "title": "Voter ID",
    "statement": "Voters should be required to show photo ID to vote.",
    "agreeLeans": 1
   },
   {
-   "id": "foreign",
-   "title": "Foreign policy",
-   "statement": "The U.S. should increase military and financial support for its allies abroad.",
-   "agreeLeans": 0
-  },
-  {
-   "id": "retirement",
-   "title": "Social Security & Medicare",
-   "statement": "Social Security and Medicare benefits should be protected from cuts, even if that means higher taxes.",
-   "agreeLeans": -1
-  },
-  {
-   "id": "regulation",
-   "title": "Business regulation",
-   "statement": "Government regulation of business does more harm than good.",
+   "id": "trade",
+   "title": "Tariffs",
+   "statement": "Tariffs on imported goods are a good way to protect American jobs.",
    "agreeLeans": 1
   },
   {
@@ -86,27 +50,9 @@
    "agreeLeans": 1
   },
   {
-   "id": "trade",
-   "title": "Trade & tariffs",
-   "statement": "Tariffs on imported goods are a good way to protect American jobs.",
-   "agreeLeans": 1
-  },
-  {
-   "id": "studentdebt",
-   "title": "Student debt",
-   "statement": "The federal government should cancel some student loan debt.",
-   "agreeLeans": -1
-  },
-  {
-   "id": "gender",
-   "title": "Gender & schools",
-   "statement": "Schools should limit classroom discussion of gender identity and sexuality.",
-   "agreeLeans": 1
-  },
-  {
    "id": "religion",
    "title": "Religion & government",
-   "statement": "Religious values should play a larger role in shaping public policy.",
+   "statement": "Religious values should play a role in shaping public policy.",
    "agreeLeans": 1
   },
   {
@@ -116,9 +62,33 @@
    "agreeLeans": -1
   },
   {
+   "id": "transathletes",
+   "title": "Transgender athletes",
+   "statement": "Transgender girls and women should be barred from competing in girls' and women's school sports.",
+   "agreeLeans": 1
+  },
+  {
    "id": "welfare",
-   "title": "Assistance programs",
+   "title": "Government assistance programs",
    "statement": "Government assistance programs for low-income people should be expanded.",
+   "agreeLeans": -1
+  },
+  {
+   "id": "warpowers",
+   "title": "Presidential war powers",
+   "statement": "The president should need Congress's approval before launching military strikes on another country.",
+   "agreeLeans": 0
+  },
+  {
+   "id": "deportation",
+   "title": "Deportation",
+   "statement": "People living in the U.S. illegally should be deported.",
+   "agreeLeans": 1
+  },
+  {
+   "id": "pathway",
+   "title": "Path to citizenship",
+   "statement": "People living in the U.S. illegally should have a way to earn legal status.",
    "agreeLeans": -1
   }
  ]
