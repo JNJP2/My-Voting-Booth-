@@ -59,6 +59,7 @@
   button.ghost { background:transparent; color:var(--muted); border:1px solid var(--line); }
   .quiz form { display:block; } /* the search form's flex layout was stretching these buttons tall */
   .quiz form > button { margin-top:16px; }
+  .rules li { padding:4px 0; } .rules .imp { margin-top:12px; } .rules summary { cursor:pointer; }
   .gauge { position:relative; height:14px; border-radius:999px; margin:34px 6px 8px; background:linear-gradient(90deg,#3b6fd4,#8a7fc8 50%,#d6403a); }
   .gauge .dot { position:absolute; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%; background:#fff; border:4px solid var(--navy); box-shadow:0 2px 8px rgba(0,0,0,.3); transition:left .6s cubic-bezier(.3,1.4,.5,1); }
   .gauge-ends { display:flex; justify-content:space-between; font-size:.8rem; color:var(--muted); }
@@ -82,10 +83,12 @@
   </form>
   <div class="note">Your address is sent only to the lookup service to find your districts and is not stored or logged.</div>
   </div>
+  <div id="rules"></div>
   <div id="quiz"></div>
   <div id="out" aria-live="polite"></div>
 </main>
 <script src="/match.js"></script>
+<script src="/rules.js"></script>
 <script>
 let last = null;
 const $ = s => document.querySelector(s);
@@ -107,7 +110,12 @@ function contest(c) {
   } else {
     body = `${c.text ? `<p>${esc(c.text)}</p>` : ""}${c.options?.length ? `<p class="meta">Choices: ${c.options.map(esc).join(" / ")}</p>` : ""}`;
   }
-  return `<div class="card"><h3>${esc(c.office)}</h3><div class="district">${esc(c.district)}</div>${body}</div>`;
+  if (c.supplemental) {
+    const src = c.source || {};
+    body += `<p class="meta">${esc(src.name || "Statewide list")}${safeUrl(src.url) ? ` <a href="${esc(src.url)}" target="_blank" rel="noopener">Official site</a>` : ""}</p>`;
+  }
+  const cat = c.category ? `<span class="chip">${esc(c.category)}</span> ` : "";
+  return `<div class="card"><h3>${esc(c.office)}</h3><div class="district">${cat}${esc(c.district)}</div>${body}</div>`;
 }
 
 function locations(title, list) {
@@ -131,7 +139,8 @@ function render(d) {
     const items = d.contests.filter(c => c.level === key);
     if (items.length) h += `<section class="lvl-${key}"><h2><span class="ico">${icon}</span>${title}</h2>` + items.map(contest).join("") + `</section>`;
   }
-  if (d.noData) h += `<div class="banner"><b>Your address was recognized, but no ballot or polling-place data is published for it yet.</b> This is a gap in the data source, not a problem with your address. Use the official links below to see your ballot and find your polling place.</div>`;
+  if (d.noData && d.supplemented) h += `<div class="banner"><b>Your address was recognized, but our data source has no local races or polling place for it yet.</b> The statewide measures below come from a separate statewide list, and your ballot may include more (local races and measures). Use the official links below to see your full ballot and polling place.</div>`;
+  else if (d.noData) h += `<div class="banner"><b>Your address was recognized, but no ballot or polling-place data is published for it yet.</b> This is a gap in the data source, not a problem with your address. Use the official links below to see your ballot and find your polling place.</div>`;
   else if (!d.contests.length) h += `<div class="card">No contests are published for this address yet. Check back closer to the election, or visit your state election office below.</div>`;
   h += locations(d.zipOnly ? "Example polling place nearby" : "Your polling place", d.pollingLocations);
   h += locations("Early voting sites", d.earlyVoteSites);
@@ -143,8 +152,10 @@ function render(d) {
   if (links) h += `<h2>${esc(o.name || "Election officials")}</h2><div class="card"><ul>${links}</ul></div>`;
   h += `<p class="note">Always confirm with your official election office. Candidate lists and locations can change.</p>`;
   $("#out").innerHTML = h;
+  Rules.setState(n.state, d.officials);
 }
 Match.init($("#quiz")).catch(() => {});
+Rules.init($("#rules")).catch(() => {});
 
 $("#f").addEventListener("submit", async e => {
   e.preventDefault();
