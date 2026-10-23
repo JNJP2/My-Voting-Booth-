@@ -66,6 +66,10 @@
   .lean-label { font-size:1.35rem; font-weight:700; } .chip { font-size:.78rem; padding:2px 9px; border-radius:999px; border:1px solid var(--line); color:var(--muted); white-space:nowrap; }
   details summary { cursor:pointer; color:var(--accent); font-size:.85rem; margin-top:4px; }
   .cmp { width:100%; font-size:.82rem; border-collapse:collapse; margin-top:6px; } .cmp th,.cmp td { text-align:left; padding:4px 6px; border-top:1px solid var(--line); }
+  .nodata { margin-top:8px; padding:8px 10px; border-radius:8px; background:color-mix(in srgb,var(--other) 14%,transparent); font-size:.85rem; }
+  li.cand-m { display:block; } li.cand-m .top { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .bar { height:8px; border-radius:999px; background:var(--line); margin-top:8px; overflow:hidden; } .bar span { display:block; height:100%; background:linear-gradient(90deg,var(--navy2),#46a1e0); }
+  .sortbar { display:flex; align-items:center; gap:8px; margin-top:16px; font-size:.9rem; color:var(--muted); } .sortbar input { flex:none; width:auto; padding:0; }
   .tabs { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
   .meta { color:var(--muted); font-size:.9rem; margin-top:4px; }
 </style>
@@ -87,8 +91,8 @@
   <div id="quiz"></div>
   <div id="out" aria-live="polite"></div>
 </main>
-<script src="/match.js"></script>
-<script src="/rules.js"></script>
+<script src="/match.js?v=3"></script>
+<script src="/rules.js?v=3"></script>
 <script>
 let last = null;
 const $ = s => document.querySelector(s);
@@ -106,7 +110,7 @@ function contest(c) {
   let body;
   if (c.candidates.length) {
     const sorted = [...c.candidates].sort((a, b) => a.party.localeCompare(b.party));
-    body = `<ul>${sorted.map(candidate).join("")}</ul>`;
+    body = Match.active() ? Match.candidateList(c) : `<ul>${sorted.map(candidate).join("")}</ul>`;
   } else {
     body = `${c.text ? `<p>${esc(c.text)}</p>` : ""}${c.options?.length ? `<p class="meta">Choices: ${c.options.map(esc).join(" / ")}</p>` : ""}`;
   }
@@ -127,12 +131,14 @@ function locations(title, list) {
 }
 
 function render(d) {
+  Match.setState((d.normalizedAddress || {}).state);
   const groups = [["federal", "🇺🇸", "Federal races"], ["state", "🏛️", "State races"], ["local", "🏘️", "Local races & measures"]];
   const n = d.normalizedAddress || {};
   let h = "";
   if (d.demo) h += `<div class="banner"><b>Demo mode:</b> showing sample data, not your real ballot. Start the server with a <code>GOOGLE_CIVIC_API_KEY</code> for live results.</div>`;
   h += `<h2 style="margin-top:24px">${esc(d.election.name || "Upcoming election")}</h2>
     <div class="meta">${esc(d.election.date || "")} · ${esc([n.line1, n.city, n.state, n.zip].filter(Boolean).join(", "))}</div>`;
+  if (Match.active()) h += Match.noticeHtml();
   if (d.zipOnly) h += `<div class="banner"><b>ZIP code preview (${esc(d.zipOnly)}):</b> based on one location in this ZIP. A ZIP code can span several districts, so some races and your polling place may differ at your actual address. Enter your full address for exact results.</div>`;
   if (d.matchedAs) h += `<div class="banner">We couldn't find the address exactly as typed, so we searched for <b>${esc(d.matchedAs)}</b>. If that's not your address, try again with the full street, city, state and ZIP.</div>`;
   for (const [key, icon, title] of groups) {
@@ -160,9 +166,10 @@ function render(d) {
   if (links) h += `<h2>${esc(o.name || "Election officials")}</h2><div class="card"><ul>${links}</ul></div>`;
   h += `<p class="note">Always confirm with your official election office. Candidate lists and locations can change.</p>`;
   $("#out").innerHTML = h;
+  const sm = $("#sortm"); if (sm) sm.onchange = () => { Match.sortByMatch = sm.checked; render(last); };
   Rules.setState(n.state, d.officials);
 }
-Match.init($("#quiz")).catch(() => {});
+Match.init($("#quiz"), () => { if (last) render(last); }).catch(() => {});
 Rules.init($("#rules")).catch(() => {});
 
 $("#f").addEventListener("submit", async e => {
